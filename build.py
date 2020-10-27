@@ -1,8 +1,10 @@
 import subprocess
 import time
 
+
 def build(url):
     folder = str("/tmp/pwa"+str(int(time.time()*1000)))
-    subprocess.run(["/home/ubuntu/.nvm/versions/node/v14.4.0/bin/pwabuilder", url, "-d", folder])
-    return url
+    subprocess.run(["/usr/bin/pwabuilder", url, "-d", folder])
+    subprocess.run(["/usr/bin/zip", "-r", folder+"/pwa.zip", folder+"/"])
+    return folder+"/pwa.zip"
 
