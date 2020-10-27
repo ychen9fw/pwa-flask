@@ -7,7 +7,8 @@ app = Flask(__name__)
 @app.route('/build_apk', methods=['POST'])
 def build_apk():
     content = request.json
-    folder = build.build(content['website'])
+    print(content)
+    folder = build.build(content['website'], content['HMSKits'], content['ads_id'], content['agcs'])
     # return 'Build: ' + result
     return send_from_directory(folder, filename="pwa.zip", as_attachment=True)
 
