@@ -2,7 +2,7 @@ import requests
 import json
 
 
-def publish(cid, secret, aid):
+def publish(cid, secret, aid, apk):
     outcome = "success"
     url = "https://connect-api.cloud.huawei.com/api/oauth2/v1/token"
     payload = "{\"grant_type\":\"client_credentials\"," \
@@ -30,9 +30,23 @@ def publish(cid, secret, aid):
     uploadUrl = json.loads(response.text)['uploadUrl']
     chunkUploadUrl = json.loads(response.text)['chunkUploadUrl']
     authCode = json.loads(response.text)['authCode']
+    headers = {
+        # 'Content-Type': 'application/json',
+        'accept': 'application/json'
+    }
+    multipart_form_data = {
+        'file': ('pwa.apk', open(apk, 'rb')),
+        'authCode': (None, authCode),
+        'fileCount': (None, '1')
+    }
+    response = requests.request("POST", uploadUrl, files=multipart_form_data, headers=headers,)
+    print(response.text.encode('utf8'))
+    fileurl = json.loads(response.text)['result']['UploadFileRsp']['fileInfoList'][0]['fileDestUlr']
     return outcome
+
 
 if __name__ == "__main__":
     publish("487884425208530048",
             "92F4F51BB5D1C6ADA913E9333898F02463E66D1C8DBCD6937C694E638B973DAC",
-            "103201705")
+            "103201705",
+            "pwa.apk")
