@@ -17,13 +17,14 @@ def build_apk():
 
 
 @app.route('/publish_apk', methods=['POST'])
-def build_apk():
+def publish_apk():
     content = request.json
     print(content)
     folder = str("/tmp/pwa_apk"+str(int(time.time()*1000)))
+    os.system("mkdir " + folder)
     os.system("echo " + content['apk'] + " | base64 --decode > " + folder + "/pwa.apk")
     outcome = publish.publish(content['client_id'], content['client_key'], content['app_id'], folder + "/pwa.apk")
-    return {outcome}
+    return outcome
 
 
 if __name__ == "__main__":
