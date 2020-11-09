@@ -42,11 +42,25 @@ def publish(cid, secret, aid, apk):
     response = requests.request("POST", uploadUrl, files=multipart_form_data, headers=headers,)
     print(response.text.encode('utf8'))
     fileurl = json.loads(response.text)['result']['UploadFileRsp']['fileInfoList'][0]['fileDestUlr']
+
+    url = "https://connect-api.cloud.huawei.com/api/publish/v2/app-file-info"
+    headers = {
+        'Content-Type': 'application/json',
+        'client_id': cid,
+        'Authorization': 'Bearer ' + token
+    }
+    query = {
+        'appId': aid
+    }
+    payload = json.dumps({"fileType": 5, "files": [{"fileName": "pwa.apk", "fileDestUrl": fileurl}]})
+    response = requests.request("PUT", url, headers=headers, params=query, data=payload)
+    print(response.text.encode('utf8'))
+
     return outcome
 
 
 if __name__ == "__main__":
     publish("487884425208530048",
             "92F4F51BB5D1C6ADA913E9333898F02463E66D1C8DBCD6937C694E638B973DAC",
-            "103201705",
+            "103238453",
             "pwa.apk")
