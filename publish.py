@@ -56,11 +56,11 @@ def publish(cid, secret, aid, apk):
     response = requests.request("PUT", url, headers=headers, params=query, data=payload)
     print(response.text.encode('utf8'))
 
-    return outcome
+    return response.text.encode('utf8')
 
 
 if __name__ == "__main__":
     publish("487884425208530048",
             "92F4F51BB5D1C6ADA913E9333898F02463E66D1C8DBCD6937C694E638B973DAC",
-            "103238453",
+            "103238465",
             "pwa.apk")
