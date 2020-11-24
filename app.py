@@ -16,13 +16,13 @@ def build_apk():
                          content['HMSKits'],
                          content['ads_id'],
                          content['agcs'],
-                         content['signingAlias'],
-                         content['signingFullname'],
-                         content['signingOrganization'],
-                         content['signingOrganizationalUnit'],
-                         content['signingCountryCode'],
-                         content['signingKeyPassword'],
-                         content['signingStorePassword']
+                         content['signing']['alias'],
+                         content['signing']['fullName'],
+                         content['signing']['organization'],
+                         content['signing']['organizationalUnit'],
+                         content['signing']['countryCode'],
+                         content['signing']['keyPassword'],
+                         content['signing']['storePassword']
                          )
     # return 'Build: ' + result
     return send_from_directory(folder, filename="pwa.zip", as_attachment=True)
