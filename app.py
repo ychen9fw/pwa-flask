@@ -8,6 +8,7 @@ from flask import Flask, request, send_file, send_from_directory, safe_join, abo
 app = Flask(__name__)
 CORS(app)
 
+
 @app.route('/build_apk', methods=['POST'])
 def build_apk():
     content = request.json
@@ -15,7 +16,7 @@ def build_apk():
     print(content['agcs'])
     folder = build.build(content['packageId'],
                          content['host'],
-                         content['HMSKits'],
+                         content.get('HMSKits', ''),
                          content['ads_id'],
                          content['agcs'].replace('data:application/json;base64,', ''),
                          content['signing']['alias'],
@@ -25,7 +26,7 @@ def build_apk():
                          content['signing']['countryCode'],
                          content['signing']['keyPassword'],
                          content['signing']['storePassword'],
-                         content['iconUrl']
+                         content.get('iconUrl', '')
                          )
     # return 'Build: ' + result
     print('returning folder' + folder)
