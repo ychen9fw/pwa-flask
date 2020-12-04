@@ -18,10 +18,17 @@ def build(pkg, url, kits, ads, agcs, signingAlias, signingFullname, signingOrgan
     pwacmd += " --signingStorePassword " + signingStorePassword
     try:
         response = requests.get(iconUrl)
+        response.raise_for_status()
         urllib.request.urlretrieve (iconUrl, icon)
         pwacmd += " --icon " + icon
-    except requests.ConnectionError as exception:
-        print(iconUrl + "icon url does not exist")
+    except requests.exceptions.HTTPError as errh:
+        print ("Http Error:",errh)
+    except requests.exceptions.ConnectionError as errc:
+        print ("Error Connecting:",errc)
+    except requests.exceptions.Timeout as errt:
+        print ("Timeout Error:",errt)
+    except requests.exceptions.RequestException as err:
+        print ("Oops: There is some error:",err)
     os.system("echo " + pwacmd)
     os.system(pwacmd)
     os.system("cd " + folder + "; /usr/bin/zip -r pwa.zip *")

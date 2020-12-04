@@ -2,6 +2,7 @@ import build
 import publish
 import time
 import os
+import base64
 from flask_cors import CORS
 from flask import Flask, request, send_file, send_from_directory, safe_join, abort
 
@@ -39,7 +40,10 @@ def publish_apk():
     print(content)
     folder = str("/tmp/pwa_apk"+str(int(time.time()*1000)))
     os.system("mkdir " + folder)
-    os.system("echo " + content['apk'] + " | base64 --decode > " + folder + "/pwa.apk")
+#    os.system("echo " + content['apk'].replace('data:application/vnd.android.package-archive;base64,', '') + " | base64 --decode > " + folder + "/pwa.apk")
+    file = open(folder + '/pwa.apk', 'wb')
+    file.write(base64.b64decode(content['apk'].replace('data:application/vnd.android.package-archive;base64,', '')))
+    file.close()
     outcome = publish.publish(content['client_id'], content['client_key'], content['app_id'], folder + "/pwa.apk")
     return outcome
 
