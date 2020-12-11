@@ -48,6 +48,11 @@ def publish_apk():
     return outcome
 
 
+@app.route('/', methods=['GET'])
+def get_success():
+    return 'get success'
+
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=80)
 
