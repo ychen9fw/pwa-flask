@@ -5,6 +5,7 @@ import os
 import base64
 from flask_cors import CORS
 from flask import Flask, request, send_file, send_from_directory, safe_join, abort
+import logging
 
 app = Flask(__name__)
 CORS(app)
@@ -40,7 +41,6 @@ def publish_apk():
     print(content)
     folder = str("/tmp/pwa_apk"+str(int(time.time()*1000)))
     os.system("mkdir " + folder)
-#    os.system("echo " + content['apk'].replace('data:application/vnd.android.package-archive;base64,', '') + " | base64 --decode > " + folder + "/pwa.apk")
     file = open(folder + '/pwa.apk', 'wb')
     file.write(base64.b64decode(content['apk'].replace('data:application/vnd.android.package-archive;base64,', '')))
     file.close()
@@ -54,5 +54,6 @@ def get_success():
 
 
 if __name__ == "__main__":
+    logging.basicConfig(filename='/home/ubuntu/api_error.log',level=logging.DEBUG)
     app.run(host="0.0.0.0", port=80)
 
